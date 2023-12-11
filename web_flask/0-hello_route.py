@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Starts a Flask web application and display a message"""
 
 from flask import Flask
 
@@ -8,6 +9,9 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
+    """
+    Displays a basic Hello world type message
+    """
     return "Hello HBNB!"
 
 
