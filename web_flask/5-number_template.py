@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+"""Starts a Flask web application"""
+
+from flask import Flask, render_template
+from markupsafe import escape
+
+
+app = Flask(__name__)
+
+
+@app.route('/', strict_slashes=False)
+def hello_hbnb():
+    """
+    Displays a basic Hello world type message
+    """
+    return "Hello HBNB!"
+
+
+@app.route('/hbnb', strict_slashes=False)
+def display_hbnb():
+    """
+    Displays "HBNB"
+    """
+    return "HBNB"
+
+
+@app.route(f'/c/<text>', strict_slashes=False)
+def c_is_fun(text):
+    """
+    Display formatted text after "C "
+    """
+    text = text.replace("_", " ")
+    # HTML escaping to prevent injection
+    return f"C {escape(text)}"
+
+
+@app.route(f'/python/', defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route(f'/python/<text>', strict_slashes=False)
+def python_is_cool(text="is cool"):
+    """
+    Display formatted text after "Python "
+    """
+    text = text.replace("_", " ")
+    # HTML escaping to prevent injection
+    return f"Python {escape(text)}"
+
+
+@app.route(f'/number/<int:n>', strict_slashes=False)
+def is_number(n):
+    """
+    Displays a message if n is a number
+    """
+    return f"{escape(n)} is a number"
+
+
+@app.route(f'/number_template/<int:n>', strict_slashes=False)
+def render_number(n):
+    """
+    Renders the HTML code by inserting the n value if it is an integer
+    """
+    return render_template('5-number.html', number=n)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
