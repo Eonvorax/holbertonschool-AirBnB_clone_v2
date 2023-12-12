@@ -13,8 +13,9 @@ def list_states():
     """
     Displays an HTML page with the list of all State objects
     """
-    states_list = storage.all(State)
-    return render_template("7-states_list.html", states=states_list)
+    states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template("7-states_list.html", states=sorted_states)
 
 
 @app.teardown_appcontext
