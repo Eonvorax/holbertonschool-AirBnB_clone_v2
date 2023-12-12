@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 @app.route('/states_list', strict_slashes=False)
-def list_states():
+def states_list():
     """
     Displays an HTML page with the list of all State objects
     """
