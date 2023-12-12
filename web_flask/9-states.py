@@ -1,29 +1,38 @@
 #!/usr/bin/python3
-"""HBNB Flask module"""
+"""Web App with Flask"""
 
 from flask import Flask, render_template
 from models import storage
 from models.state import State
+from models.city import City
 
 app = Flask(__name__)
 
 
-@app.route("/states", defaults={"id": None}, strict_slashes=False)
-@app.route("/states/<id>", strict_slashes=False)
-def list_states():
-    """
-    Displays an HTML page with the list of all State objects
-    """
-    states_list = storage.all(State)
+@app.route("/states", strict_slashes=False)
+def display_states():
+    """Displays states"""
+    states = storage.all(State)
+    return render_template("9-states.html", states=states,
+                           current_route="route_states")
 
-    return render_template("9-states.html", states=states_list, state_id=id)
+
+@app.route('/states/<id>', strict_slashes=False)
+def cities_of_state(id):
+    """Get cities by states"""
+    list_states = storage.all(State)
+    for state in list_states.values():
+        if state.id == id:
+            cities = state.cities
+            return render_template('9-states.html', states=list_states,
+                                   cities=cities, state=state,
+                                   current_route="route_cities")
+    return render_template('9-states.html', current_route="not found")
 
 
 @app.teardown_appcontext
-def teardown():
-    """
-    Closes the current session after the each request
-    """
+def remove_sqlsession(exception=None):
+    """A method that removes SQL Session"""
     storage.close()
 
 
